@@ -1,0 +1,6 @@
+user = 'ptoledor_coderhouse'
+passw = 'Oyd0K639G3'
+host = 'data-engineer-cluster.cyhh5bfevlmn.us-east-1.redshift.amazonaws.com'
+port = '5439'
+database = 'data-engineer-database'
+schema = 'ptoledor_coderhouse'
