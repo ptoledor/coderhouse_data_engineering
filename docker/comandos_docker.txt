@@ -1,0 +1,29 @@
+##### Build #####
+
+docker build -t <nombre_de_la_build> <dir_del_dockerfile>
+
+ej: docker build -t hola_mundo .
+
+-t -> añadir tag o nombre a la imagen de docker
+
+##### Current images #####
+docker image ls
+docker images
+
+
+##### Run images #####
+docker run hola_mundo_imagen
+
+
+##### Ver que contenedores estan corriendo #####
+docker ps
+docker ps -a (historial de contenedores que corrieron)
+docker rm <codigo_del_contenedor> (remover imagenes)
+
+
+##### Run docker compose ###### (siempre archivos yaml, docker-compose.yaml)
+docker-compose up 
+
+
+##### Deter proceso """"
+docker stop <id_proceso>
