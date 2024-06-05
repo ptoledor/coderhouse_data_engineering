@@ -29,13 +29,16 @@ def get_joke():
 
 
 # %%
-import config
-user = config.user
-passw = config.passw
-host = config.host
-port = config.port
-database = config.database
-schema = config.schema
+import os
+import dotenv
+dotenv.load_dotenv('config.env')
+
+user = os.environ.get('USER')
+passw = os.environ.get('PASSW')
+host = os.environ.get('HOST')
+port = os.environ.get('PORT')
+database = os.environ.get('DATABASE')
+schema = os.environ.get('SCHEMA')
 
 # %%
 #coneccion a redshift
