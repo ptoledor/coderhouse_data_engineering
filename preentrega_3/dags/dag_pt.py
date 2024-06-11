@@ -145,16 +145,16 @@ with DAG('agrega_chiste_chuck_norris',
           catchup=False,
           default_args=default_args) as dag:
     
-    args1 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
+    kwargs1 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
     task1 = PythonOperator(task_id='create_table_query', 
                            python_callable=create_table_query, 
-                           op_kwargs=args1, 
+                           op_kwargs=kwargs1, 
                            dag=dag)
 
-    args2 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
+    kwargs2 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
     task2 = PythonOperator(task_id='insert_data',
                             python_callable=insertar_sin_repeticion, 
-                            op_kwargs=args2, 
+                            op_kwargs=kwargs2, 
                             dag=dag)
 
     task1 >> task2
