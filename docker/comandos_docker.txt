@@ -27,3 +27,15 @@ docker-compose up
 
 ##### Deter proceso """"
 docker stop <id_proceso>
+
+
+##### Revisar librerías #####
+
+id: docker ps
+
+
+docker exec -it {docker_ps_id9fc5cd886519} /bin/bash
+
+
+##### Agregar requ####
+_PIP_ADDITIONAL_REQUIREMENTS: 'python-dotenv'

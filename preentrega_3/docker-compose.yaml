@@ -43,6 +43,12 @@ x-airflow-common:
   &airflow-common
   # In order to add custom dependencies or upgrade provider packages you can use your extended image.
   # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
+  build:
+      context: .
+      dockerfile: Dockerfile
+    
+  env_file:
+    - ./config.env
   # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
   image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.3.3}
   # build: .
@@ -56,6 +62,7 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 10
+    _PIP_ADDITIONAL_REQUIREMENTS: 'python-dotenv'
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
@@ -75,7 +82,7 @@ services:
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
     ports:
-      - 5431:5431
+      - 5432:5432
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
@@ -93,6 +100,7 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    
 
   airflow-scheduler:
     <<: *airflow-common

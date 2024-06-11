@@ -5,6 +5,7 @@ import pandas as pd
 import datetime
 import sqlalchemy
 
+
 from airflow import DAG
 from airflow.macros import ds_add
 from airflow.operators.python_operator import PythonOperator
@@ -129,13 +130,25 @@ def insertar_sin_repeticion(conn, engine, schema, table_name):
 
 
 
+
+default_args = {
+    'owner': 'pedro-toledo',
+    'depends_on_past': False,
+    'start_date': datetime.datetime(2024, 6, 10),
+    'retries': 1,
+    'retry_delay': datetime.timedelta(minutes=5),
+}
+
 with DAG('agrega_chiste_chuck_norris',
           description='DAG que hace un request a una API y guarda un chiste en una tabla de redshift',
           schedule_interval='0 12 * * *',
-          catchup=False) as dag:
+          catchup=False,
+          default_args=default_args) as dag:
+    
+    args1 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
+    task1 = PythonOperator(task_id='create_table_query', python_callable=create_table_query, op_args=args1, dag=dag, provide_context=True)
 
-    task1 = PythonOperator(task_id='create_table_query', python_callable=create_table_query, dag=dag)
-
-    task2 = PythonOperator(task_id='insert_data', python_callable=insertar_sin_repeticion, dag=dag, provide_context=True)
+    args2 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
+    task2 = PythonOperator(task_id='insert_data', python_callable=insertar_sin_repeticion, op_args=args2, dag=dag, provide_context=True)
 
     task1 >> task2
