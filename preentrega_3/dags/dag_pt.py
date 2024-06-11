@@ -136,7 +136,7 @@ default_args = {
     'depends_on_past': False,
     'start_date': datetime.datetime(2024, 6, 10),
     'retries': 1,
-    'retry_delay': datetime.timedelta(minutes=5),
+    'retry_delay': datetime.timedelta(minutes=1),
 }
 
 with DAG('agrega_chiste_chuck_norris',
@@ -146,9 +146,15 @@ with DAG('agrega_chiste_chuck_norris',
           default_args=default_args) as dag:
     
     args1 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
-    task1 = PythonOperator(task_id='create_table_query', python_callable=create_table_query, op_args=args1, dag=dag, provide_context=True)
+    task1 = PythonOperator(task_id='create_table_query', 
+                           python_callable=create_table_query, 
+                           op_kwargs=args1, 
+                           dag=dag)
 
     args2 = {'conn': conn, 'engine': engine, 'schema': schema, 'table_name': 'chuck_jokes2'}
-    task2 = PythonOperator(task_id='insert_data', python_callable=insertar_sin_repeticion, op_args=args2, dag=dag, provide_context=True)
+    task2 = PythonOperator(task_id='insert_data',
+                            python_callable=insertar_sin_repeticion, 
+                            op_kwargs=args2, 
+                            dag=dag)
 
     task1 >> task2
